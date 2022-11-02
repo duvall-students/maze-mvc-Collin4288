@@ -1,7 +1,7 @@
 package application;
 
 import java.awt.Point;
-
+ 
 /*
  * @author Shannon Duvall
  * 
@@ -179,7 +179,7 @@ public class Maze {
 			maze[row][col] = maze[row+1][col];
 		}
 	}
-
+ 
 	/*
 	 * Subroutine of creating a new random maze.
 	 * This method joins "rooms" that were previously separate, once a wall is torn down.
