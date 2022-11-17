@@ -185,8 +185,6 @@ public class MazeDisplay extends Application {
 		return searches;
 	}
 
-	
-
 	/*
 	 * Setup the maze part for drawing. In particular,
 	 * make the mirrorMaze.
@@ -204,8 +202,6 @@ public class MazeDisplay extends Application {
 		}
 		return drawing;
 	}
-	
-
 	
 
 	/*
@@ -243,8 +239,6 @@ public class MazeDisplay extends Application {
 			mazeController.doOneStep(elapsedTime);
 		}
 	}
-
-	
 
 
 	public static void main(String[] args) {

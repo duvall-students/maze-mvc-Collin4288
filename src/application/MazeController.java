@@ -1,5 +1,4 @@
 package application;
-
 import java.awt.Point;
 
 import javafx.animation.KeyFrame;
@@ -11,6 +10,8 @@ import searches.DFS;
 import searches.Greedy;
 import searches.Magic;
 import searches.RandomWalk;
+import searches.SearchAlgorithm;
+import searches.SearchFactory;
 
 public class MazeController {
 	
@@ -25,57 +26,64 @@ public class MazeController {
 		maze = new Maze(numRows, numColumns);
 		mazeDisplay = myMazeDisplay;
 
-		
 	}
 	/* 
 	 * Logic of the program
 	 */
 	// The search algorithms
-	private Greedy greedy;				
-	private BFS bfs;
-	private DFS dfs;
-	private RandomWalk rand;
-	private Magic magic;
-	private String search = "";		// This string tells which algorithm is currently chosen.  Anything other than 
+	//private Greedy greedy;				
+	//private BFS bfs;
+	//private DFS dfs;
+	//private RandomWalk rand;
+	//private Magic magic;
+	private SearchAlgorithm search ;		// This string tells which algorithm is currently chosen.  Anything other than 
 	// the implemented search class names will result in no search happening.
 
 	// Where to start and stop the search
 	private Point start;
 	private Point goal;
+	
+	//Make a SearchFactory instance variable in the Controller and initialize it.
+	private SearchFactory searchFactory;
+
 
 	
-
+	
+	public void startSearch(String searchType) {
+		maze.reColorMaze();
+		SearchFactory factory = new SearchFactory();
+		search = factory.makeSearch(searchType, maze, start, goal);
+		// Restart the search.  Since I don't know 
+		// which one, I'll restart all of them.
+		/*
+		BFS bfs = new BFS(maze, start, goal);	// start in upper left and end in lower right corner
+		DFS dfs = new DFS(maze, start, goal);
+		//Greedy greedy = new Greedy(maze, start, goal);
+		RandomWalk rand = new RandomWalk(maze, start, goal);
+		//magic = new Magic(maze, start, goal);
+		
+		if(searchType.equals("DFS")) search = dfs;
+		else if (searchType.equals("BFS")) search = bfs;
+		//else if (search.equals("Greedy")) search = greedy;
+		else if (searchType.equals("RandomWalk")) search = rand;
+		//else if (search.equals("Magic")) magic.step();
+		*/
+	}
+	
 
 	
-	
-	
-
 	
 	/*
 	 * Does a step in the search regardless of pause status
 	 */
 	public void doOneStep(double elapsedTime){
-		if(search.equals("DFS")) dfs.step();
-		else if (search.equals("BFS")) bfs.step();
-		else if (search.equals("Greedy")) greedy.step();
-		else if (search.equals("RandomWalk")) rand.step();
-		else if (search.equals("Magic")) magic.step();
+		if (search != null) {
+			search.step();
+		}
 		mazeDisplay.redraw();
 	}
 	
-	public void startSearch(String searchType) {
-		maze.reColorMaze();
-		search = searchType;
-		
-		// Restart the search.  Since I don't know 
-		// which one, I'll restart all of them.
-		
-		bfs = new BFS(maze, start, goal);	// start in upper left and end in lower right corner
-		dfs = new DFS(maze, start, goal);
-		greedy = new Greedy(maze, start, goal);
-		rand = new RandomWalk(maze, start, goal);
-		magic = new Magic(maze, start, goal);
-	}
+	
 	
 	public int getCellState(Point position) {
 		return maze.get(position);
@@ -86,11 +94,9 @@ public class MazeController {
 	 */
 	public void newMaze() {
 		maze.createMaze(maze.getNumRows(),maze.getNumCols());
-		search = "";
+		search = null;
 		mazeDisplay.redraw();
 	}
 
-
-	
 	
 }
